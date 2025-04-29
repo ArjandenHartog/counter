@@ -128,6 +128,53 @@ export function TeamCounterSection({ onUpdate }: TeamCounterSectionProps) {
     }
   };
 
+  const fetchTeamCount = async () => {
+    try {
+      const response = await fetch('/api/teams');
+      const data = await response.json();
+      return data.count;
+    } catch (error) {
+      console.error('Error fetching team count:', error);
+      return 0;
+    }
+  };
+
+  const handleTeamIncrement = async () => {
+    try {
+      const response = await fetch('/api/teams/increment', {
+        method: 'POST',
+      });
+      const data = await response.json();
+      setCount(data.count);
+    } catch (error) {
+      console.error('Error incrementing team count:', error);
+    }
+  };
+
+  const handleTeamDecrement = async () => {
+    try {
+      const response = await fetch('/api/teams/decrement', {
+        method: 'POST',
+      });
+      const data = await response.json();
+      setCount(data.count);
+    } catch (error) {
+      console.error('Error decrementing team count:', error);
+    }
+  };
+
+  const handleTeamReset = async () => {
+    try {
+      const response = await fetch('/api/teams/reset', {
+        method: 'POST',
+      });
+      const data = await response.json();
+      setCount(data.count);
+    } catch (error) {
+      console.error('Error resetting team count:', error);
+    }
+  };
+
   return (
     <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-none shadow-xl overflow-hidden relative group">
       {/* Animated gradient border effect */}

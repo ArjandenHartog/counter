@@ -51,3 +51,6 @@ export default function Home() {
     </main>
   );
 }
+
+// Add this export for static generation
+export const dynamic = 'force-static';

@@ -18,110 +18,54 @@ export function CounterSection({ onUpdate }: CounterSectionProps) {
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const response = await fetch("/api/count");
+        const response = await fetch('/api/count');
         const data = await response.json();
-        setCount(data.count);
+        return data.count;
       } catch (error) {
-        console.error("Error fetching count:", error);
+        console.error('Error fetching count:', error);
+        return 0;
       }
     };
 
-    fetchCount();
+    fetchCount().then(setCount);
   }, []);
 
   // Handle increment
   const handleIncrement = async () => {
     try {
-      setIsLoading(true);
-      setAnimateCount(true);
-      
-      // Optimistic update for better UX
-      setCount(prevCount => prevCount + 1);
-      
-      const response = await fetch("/api/increment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await fetch('/api/increment', {
+        method: 'POST',
       });
-
       const data = await response.json();
-      
-      // Update with actual value from server (in case of error)
-      if (data.count !== undefined) {
-        setCount(data.count);
-      }
-      
-      // Trigger parent component to refresh logs
-      onUpdate();
+      setCount(data.count);
     } catch (error) {
-      console.error("Error incrementing count:", error);
-      // Revert optimistic update on error
-      setCount(prevCount => prevCount - 1);
-    } finally {
-      setIsLoading(false);
-      setTimeout(() => setAnimateCount(false), 300); // Reduced from 500ms to 300ms
+      console.error('Error incrementing count:', error);
     }
   };
 
   // Handle decrement
   const handleDecrement = async () => {
     try {
-      setIsLoading(true);
-      setAnimateCount(true);
-      
-      // Optimistic update for better UX
-      setCount(prevCount => prevCount - 1);
-      
-      const response = await fetch("/api/decrement", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await fetch('/api/decrement', {
+        method: 'POST',
       });
-
       const data = await response.json();
-      
-      // Update with actual value from server (in case of error)
-      if (data.count !== undefined) {
-        setCount(data.count);
-      }
-      
-      // Trigger parent component to refresh logs
-      onUpdate();
+      setCount(data.count);
     } catch (error) {
-      console.error("Error decrementing count:", error);
-      // Revert optimistic update on error
-      setCount(prevCount => prevCount + 1);
-    } finally {
-      setIsLoading(false);
-      setTimeout(() => setAnimateCount(false), 300); // Reduced from 500ms to 300ms
+      console.error('Error decrementing count:', error);
     }
   };
 
   // Handle reset
   const handleReset = async () => {
-    if (window.confirm("Weet je zeker dat je de teller wilt resetten naar 0?")) {
-      try {
-        setIsLoading(true);
-        setAnimateCount(true);
-        const response = await fetch("/api/reset", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const data = await response.json();
-        setCount(data.count);
-        // Trigger parent component to refresh logs
-        onUpdate();
-      } catch (error) {
-        console.error("Error resetting count:", error);
-      } finally {
-        setIsLoading(false);
-        setTimeout(() => setAnimateCount(false), 300); // Changed from 500ms to 300ms
-      }
+    try {
+      const response = await fetch('/api/reset', {
+        method: 'POST',
+      });
+      const data = await response.json();
+      setCount(data.count);
+    } catch (error) {
+      console.error('Error resetting count:', error);
     }
   };
 

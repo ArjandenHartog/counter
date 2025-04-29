@@ -27,24 +27,24 @@ export function LogsSection({ refreshTrigger }: LogsSectionProps) {
     const fetchLogs = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("/api/logs");
+        const response = await fetch('/api/logs');
         const data = await response.json();
-        
-        // Track the latest log ID for animations
-        if (data.length > 0) {
-          const newestLogId = Math.max(...data.map((log: LogEntry) => log.id));
-          setLatestLogId(newestLogId);
-        }
-        
-        setLogs(data);
+        return data.logs || [];
       } catch (error) {
-        console.error("Error fetching logs:", error);
+        console.error('Error fetching logs:', error);
+        return [];
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchLogs();
+    fetchLogs().then((data) => {
+      setLogs(data);
+      if (data.length > 0) {
+        const newestLogId = Math.max(...data.map((log: LogEntry) => log.id));
+        setLatestLogId(newestLogId);
+      }
+    });
   }, [refreshTrigger]);
 
   // Format date for display

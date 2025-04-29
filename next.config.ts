@@ -10,7 +10,11 @@ const nextConfig: NextConfig = {
     // Ignore TypeScript errors during production build
     ignoreBuildErrors: true,
   },
-  output: 'standalone',
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  trailingSlash: true,
 };
 
 export default nextConfig;
