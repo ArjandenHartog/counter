@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Don't ignore SQLite database files - needed for deployment
+!db/counter.db

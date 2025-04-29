@@ -1,0 +1,13 @@
+[Unit]
+Description=Counter Next.js Application
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/npm run start
+WorkingDirectory=/home/arjan/Documenten/counter
+Restart=always
+User=arjan
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target 
